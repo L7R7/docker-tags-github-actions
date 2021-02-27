@@ -16,15 +16,13 @@ jobs:
       - uses: docker/setup-buildx-action@v1
         name: Set up Docker Buildx
 
-      - name: Generate tags
-        id: gen_tags
-        run: |
-          if [[ $GITHUB_REF == 'refs/tags/'* ]]; then
-            TAGS='["l7r7/sample:latest","'${GITHUB_REF/refs\/tags\//}'"]'
-          else
-            TAGS='["l7r7/sample:latest"]'
-          fi
-          echo '::set-output name=tags::'$TAGS
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: l7r7/sample
+          tag-semver: |
+            {{raw}}
 
       - name: Build and push
         id: docker_build
@@ -32,7 +30,8 @@ jobs:
         with:
           context: .
           push: false
-          tags: ${{ fromJson(steps.gen_tags.outputs.tags) }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
