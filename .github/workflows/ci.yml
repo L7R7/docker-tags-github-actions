@@ -33,5 +33,8 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
 
+      - name: Debug outputs
+        run: echo ${{ steps.docker_meta.outputs.tags }}
+
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
