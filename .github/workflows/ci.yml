@@ -21,6 +21,7 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: l7r7/sample
+          tag-latest: true
           tag-semver: |
             {{raw}}
 
