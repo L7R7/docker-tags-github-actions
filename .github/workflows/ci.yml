@@ -1,10 +1,11 @@
 name: CI
 
-# Trigger the workflow on push or pull request, but only for the main branch
 on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
 
 jobs:
   docker:
@@ -33,9 +34,3 @@ jobs:
           push: false
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
-
-      - name: Debug outputs
-        run: echo ${{ steps.docker_meta.outputs.tags }}
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
